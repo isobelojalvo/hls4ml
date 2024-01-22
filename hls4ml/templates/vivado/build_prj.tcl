@@ -162,9 +162,11 @@ if {$opt(reset)} {
     open_solution "solution1"
 }
 catch {config_array_partition -maximum_size 4096}
-config_compile -name_max_length 60
+config_compile -name_max_length 80
 set_part $part
+config_schedule -enable_dsp_full_reg=false
 create_clock -period $clock_period -name default
+set_clock_uncertainty $clock_uncertainty default
 
 
 if {$opt(csim)} {
@@ -227,7 +229,7 @@ if {$opt(validation)} {
 if {$opt(export)} {
     puts "***** EXPORT IP *****"
     set time_start [clock clicks -milliseconds]
-    export_design -format ip_catalog
+    export_design -format ip_catalog -version $version
     set time_end [clock clicks -milliseconds]
     report_time "EXPORT IP" $time_start $time_end
 }
